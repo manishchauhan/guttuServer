@@ -1,0 +1,30 @@
+{
+  "name": "guttu",
+  "version": "1.0.0",
+  "description": "A highly scalable framework for multiplayer gaming build on top on socket.io mysql and nodejs",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon — exec babel-node server.js"
+  },
+  "keywords": [
+    "gaming",
+    "multiplayer",
+    "websokcets"
+  ],
+  "author": "manish chauhan",
+  "license": "ISC",
+  "dependencies": {
+    "babel-preset-env": "^1.7.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/node": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "nodemon": "^2.0.15"
+  }
+}
