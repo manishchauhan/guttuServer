@@ -32,6 +32,21 @@ export class MySqlDataBase
         }
         return this.mysqlInstance;
     }
+    //  Select all from table not best when table is really big
+    selectAll(tableName,callBack=null)
+    {
+        const query= `SELECT * FROM ${tableName}`;
+        this.connection.query(query,(err,res)=>{
+            if(err)
+            {
+                throw new Error(err);
+            }
+            if(callBack)
+            {
+                callBack(res);
+            }
+        })
+    }
    //   Add a user based on table
    addUser(tableName,dataObject,callBack=null)
    {
@@ -47,7 +62,7 @@ export class MySqlDataBase
             }
         })
    }
-   
+
    // Select user based on where
    selectUser(tableName,objectString,callBack=null,fieldName=`email`)
    {

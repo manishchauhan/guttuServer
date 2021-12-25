@@ -17,6 +17,7 @@ export class UserRoutes
         env.config();
         this.addUser();
         this.loginUser();
+        this.selectAll();
     }
     // with callback
     addUser()
@@ -54,6 +55,24 @@ export class UserRoutes
           
         })
        
+    }
+    //  Select all
+    selectAll()
+    {
+        const tableName="fungames";
+        this.route.get(`/fewgames`,(req,res)=>{
+            if(!req.body)
+            {
+                res.status(400).send({
+                    message:"Content can be empty!"
+                })
+                return;
+            }
+            MySqlDataBase.getInstance().selectAll(tableName,(status,response)=>{
+                res.send({data:response});
+                return;
+            })
+        })
     }
     //  Login user
     loginUser()
