@@ -1,6 +1,7 @@
 import  express  from "express";
 import { MySqlDataBase } from "../db/db.js";
 import {UserAlreadyExits} from "../config/db.config.js"
+ import bcrypt from 'bcrypt'
 export class UserRoutes
 {
     constructor()
@@ -24,12 +25,16 @@ export class UserRoutes
             dataObject.username=req.body.UserName;
             dataObject.password=req.body.Password;
             dataObject.email=req.body.Email
-            MySqlDataBase.getInstance().selectUser(tableName,dataObject.email,(status)=>{
+            MySqlDataBase.getInstance().selectUser(tableName,dataObject.email,async(status)=>{
                 if(status)
                 {
                     res.send({message:UserAlreadyExits})
                     return;
                 }
+                // 10 rounds is more than enough 
+                const rounds=10;
+                const safePassword=await bcrypt.hash(dataObject.password,rounds);
+                dataObject.password=safePassword;
                 MySqlDataBase.getInstance().addUser(tableName,dataObject,(msg)=>{
                     res.send({message:msg});
                     return;
