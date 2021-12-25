@@ -39,11 +39,27 @@ export class MySqlDataBase
         this.connection.query(query,dataObject,(err,res)=>{
             if(err)
             {
-                throw err;
+                throw new Error(err);
             }
             if(callBack)
             {
                 callBack(`Data Inserted to the Table`);
+            }
+        })
+   }
+   
+   // Select user based on where
+   selectUser(tableName,objectString,callBack=null)
+   {
+        const query=`SELECT * FROM ${tableName} WHERE email = ?`
+        this.connection.query(query,objectString,(err,res)=>{
+            if(err)
+            {
+                throw new Error(err);
+            }
+            if(callBack)
+            {
+                res.length>0?callBack(true):callBack(false);
             }
         })
    }

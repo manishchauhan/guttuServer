@@ -4,3 +4,4 @@ export  const MySqlConfig={
     PASSWORD:"",
     DB:"guttu"
 }
+export const UserAlreadyExits=`Please try with other email user already exits`;

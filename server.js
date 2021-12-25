@@ -28,13 +28,13 @@ class App {
         // add user Routes
         this.addUserRoutes();
         // Handle all errors
-        /*
+        
         app.use((req,res,next)=>{
             const err=new Error(`404: Not Found `+req.originalUrl);
             err.status=404;
             next(err);
             return;
-        })*/
+        })
     }
     addUserRoutes()
     {
