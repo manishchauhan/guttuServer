@@ -1,6 +1,6 @@
 import  express  from "express";
 import { MySqlDataBase } from "../db/db.js";
-import {UserAlreadyExits} from "../config/db.config.js"
+import {UserAlreadyExits,PasswordFail,ErrorCodes} from "../config/db.config.js"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import env from 'dotenv'
@@ -39,7 +39,7 @@ export class UserRoutes
             MySqlDataBase.getInstance().selectUser(tableName,dataObject.username,async(status)=>{
                 if(status)
                 {
-                     res.status(207).send({message:UserAlreadyExits,errorCode:207})
+                     res.status(ErrorCodes.UserAlreadyExits).send({message:UserAlreadyExits,errorCode:ErrorCodes.UserAlreadyExits})
                     return;
                 }
                 // 10 rounds is more than enough 
@@ -72,6 +72,11 @@ export class UserRoutes
             dataObject.password=req.body.Password;
             const fieldName=`username`
             MySqlDataBase.getInstance().selectUser(tableName,dataObject.username,async(status,response)=>{
+                if(response.length<1)
+                {
+                    res.status(ErrorCodes.PasswordFail).send({message:PasswordFail,errorCode:ErrorCodes.PasswordFail})
+                    return;
+                }
                 const user=response[0];
                 const hashedPassword=user.password;
                 const passWordStatus=await bcrypt.compare(dataObject.password,hashedPassword)
@@ -82,13 +87,12 @@ export class UserRoutes
                     payLoadObject.user=user.username;
                     payLoadObject.email=user.email;
                     payLoadObject.isLogin=true;
-                    console.log(env.ACCESS_TOKEN_SECRET)
                     const accessToken=jwt.sign(payLoadObject,process.env.ACCESS_TOKEN_SECRET);
                     res.send({message:accessToken,userData:payLoadObject});
                     return;
                 }else
                 {
-                    res.send({message:"wrong password"});
+                    res.status(ErrorCodes.PasswordFail).send({message:PasswordFail,errorCode:ErrorCodes.PasswordFail})
                     return;
                 }
             },fieldName)
