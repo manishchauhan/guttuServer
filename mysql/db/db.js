@@ -49,9 +49,9 @@ export class MySqlDataBase
    }
    
    // Select user based on where
-   selectUser(tableName,objectString,callBack=null)
+   selectUser(tableName,objectString,callBack=null,fieldName=`email`)
    {
-        const query=`SELECT * FROM ${tableName} WHERE email = ?`
+        const query=`SELECT * FROM ${tableName} WHERE ${fieldName} = ?`
         this.connection.query(query,objectString,(err,res)=>{
             if(err)
             {
@@ -59,7 +59,7 @@ export class MySqlDataBase
             }
             if(callBack)
             {
-                res.length>0?callBack(true):callBack(false);
+                res.length>0?callBack(true,res):callBack(false,res);
             }
         })
    }
