@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import env from 'dotenv'
 import path from 'path';
+import {authentication} from './authentication.js'
 const __dirname = path.resolve();
 env.config({path: __dirname + '/.env'});
 
@@ -20,6 +21,7 @@ export class UserRoutes
         this.selectAll();
     }
     // with callback
+    
     addUser()
     {
         const tableName="user"
@@ -60,7 +62,7 @@ export class UserRoutes
     selectAll()
     {
         const tableName="fungames";
-        this.route.get(`/fewgames`,(req,res)=>{
+        this.route.get(`/fungames`,authentication,(req,res)=>{
             if(!req.body)
             {
                 res.status(400).send({
@@ -68,8 +70,9 @@ export class UserRoutes
                 })
                 return;
             }
-            MySqlDataBase.getInstance().selectAll(tableName,(status,response)=>{
-                res.send({data:response});
+            MySqlDataBase.getInstance().selectAll(tableName,(response)=>{
+
+                res.send(response);
                 return;
             })
         })
@@ -107,7 +110,7 @@ export class UserRoutes
                     payLoadObject.email=user.email;
                     payLoadObject.isLogin=true;
                     const accessToken=jwt.sign(payLoadObject,process.env.ACCESS_TOKEN_SECRET);
-                    res.send({message:accessToken,userData:payLoadObject});
+                    res.send({authToken:accessToken,AuthData:payLoadObject});
                     return;
                 }else
                 {
