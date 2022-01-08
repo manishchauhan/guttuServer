@@ -2,14 +2,18 @@ import  express  from "express";
 import jwt from 'jsonwebtoken'
 import env from 'dotenv'
 import path from 'path';
+import * as cookieParser from 'cookie-parser';
 const __dirname = path.resolve();
 env.config({path: __dirname + '/.env'});
 
 export function authentication(req,res,next)
 {
-    const authHeader=req.headers[`authorization`];
-  
+
+     // when you send
+      const authHeader=req.headers[`authorization`];
+      console.log(authHeader)
     const token=authHeader && authHeader.split(` `)[1];
+
 
     if(token===undefined || token===null)
     {

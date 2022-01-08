@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import env from 'dotenv'
 import path from 'path';
+
 import {authentication} from './authentication.js'
 const __dirname = path.resolve();
 env.config({path: __dirname + '/.env'});
@@ -80,6 +81,7 @@ export class UserRoutes
     //  Login user
     loginUser()
     {
+        
         const tableName="user"
         this.route.post(`/login`,(req,res)=>{
             if(!req.body)
@@ -102,6 +104,7 @@ export class UserRoutes
                 const user=response[0];
                 const hashedPassword=user.password;
                 const passWordStatus=await bcrypt.compare(dataObject.password,hashedPassword)
+         
                 if(passWordStatus)
                 {
                     // Create a jwt toke
@@ -110,7 +113,11 @@ export class UserRoutes
                     payLoadObject.email=user.email;
                     payLoadObject.isLogin=true;
                     const accessToken=jwt.sign(payLoadObject,process.env.ACCESS_TOKEN_SECRET);
-                    res.send({authToken:accessToken,AuthData:payLoadObject});
+                    payLoadObject.accessToken=accessToken;
+                    res.cookie('accessToken',accessToken,{httpOnly:false,secure: false,domain:`localhost`}).status(200).send({AuthData:payLoadObject});
+                    
+                     // (WHEN YOU ARE COOKIE GUY)
+                    //  (WHEN U BELIVE IN LOCAL STORAGE) res.send({authToken:accessToken,AuthData:payLoadObject});
                     return;
                 }else
                 {
