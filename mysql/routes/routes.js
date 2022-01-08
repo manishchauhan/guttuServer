@@ -133,7 +133,7 @@ export class UserRoutes
     // logout user 
     logOut()
     {
-        this.route.get("/logout", authenticationPost, (req, res) => {
+        this.route.post("/logout", authenticationPost, (req, res) => {
             return res
               .clearCookie("accessToken")
               .status(200)
