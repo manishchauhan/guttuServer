@@ -6,9 +6,10 @@ import jwt from 'jsonwebtoken'
 import env from 'dotenv'
 import path from 'path';
 
-import {authentication} from './authentication.js'
+import {authentication,authenticationPost} from './authentication.js'
 const __dirname = path.resolve();
 env.config({path: __dirname + '/.env'});
+
 
 export class UserRoutes
 {
@@ -20,6 +21,7 @@ export class UserRoutes
         this.addUser();
         this.loginUser();
         this.selectAll();
+        this.logOut();
     }
     // with callback
     
@@ -127,4 +129,16 @@ export class UserRoutes
             },fieldName)
         })
     }
+
+    // logout user 
+    logOut()
+    {
+        this.route.get("/logout", authenticationPost, (req, res) => {
+            return res
+              .clearCookie("accessToken")
+              .status(200)
+              .send({logout:true,message:"You have Logged Out successfully"});
+          });
+    }
+    
 }
