@@ -31,7 +31,7 @@ export class RoomRoutes
             dataObject.players=req.body.players;//player
             dataObject.parentgame=req.body.parentgame;//parent game
             MySqlDataBase.getInstance().add(tableName,dataObject,(msg)=>{
-                res.send({message:"Room added successfully enjoy"});
+                res.status(201).send({message:"Room added successfully enjoy"});
                 return;
             })
           

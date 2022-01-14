@@ -59,6 +59,7 @@ export class MySqlDataBase
             }
             if(callBack)
             {
+              
                 callBack(`Data Inserted to the Table`);
             }
         })
