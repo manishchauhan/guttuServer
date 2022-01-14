@@ -91,7 +91,7 @@ export class UserRoutes
             dataObject.username=req.body.UserName;
             dataObject.password=req.body.Password;
             const fieldName=`username`
-            MySqlDataBase.getInstance().selectUser(tableName,dataObject.username,async(status,response)=>{
+            MySqlDataBase.getInstance().select(tableName,dataObject.username,async(status,response)=>{
                 if(response.length<1)
                 {
                     res.status(ErrorCodes.PasswordFail).send({message:PasswordFail,errorCode:ErrorCodes.PasswordFail})
