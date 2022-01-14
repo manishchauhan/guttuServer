@@ -1,23 +1,17 @@
-import  express  from "express";
-import { MySqlDataBase } from "../db/db.js";
-import {UserAlreadyExits,PasswordFail,ErrorCodes} from "../config/db.config.js"
-import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
-import env from 'dotenv'
-import path from 'path';
+import {express,MySqlDataBase,UserAlreadyExits,
+    PasswordFail,ErrorCodes,bcrypt,jwt,path,env,authentication,
+    authenticationPost} from    '../config/routeHeader.js'
 
-import {authentication,authenticationPost} from './authentication.js'
+
+//resolve path
 const __dirname = path.resolve();
 env.config({path: __dirname + '/.env'});
-
-
 export class UserRoutes
 {
     constructor()
     {
         
         this.route=express.Router();
-        env.config();
         this.addUser();
         this.loginUser();
         this.selectAll();
@@ -42,7 +36,7 @@ export class UserRoutes
             dataObject.email=req.body.Email
             const fieldName=`username`
        
-            MySqlDataBase.getInstance().selectUser(tableName,dataObject.username,async(status)=>{
+            MySqlDataBase.getInstance().select(tableName,dataObject.username,async(status)=>{
                 if(status)
                 {
                      res.status(ErrorCodes.UserAlreadyExits).send({message:UserAlreadyExits,errorCode:ErrorCodes.UserAlreadyExits})
@@ -52,7 +46,7 @@ export class UserRoutes
                 const rounds=10;
                 const safePassword=await bcrypt.hash(dataObject.password,rounds);
                 dataObject.password=safePassword;
-                MySqlDataBase.getInstance().addUser(tableName,dataObject,(msg)=>{
+                MySqlDataBase.getInstance().add(tableName,dataObject,(msg)=>{
                     res.send({message:msg});
                     return;
                 })
@@ -113,6 +107,7 @@ export class UserRoutes
                     const payLoadObject={};
                     payLoadObject.user=user.username;
                     payLoadObject.email=user.email;
+                    payLoadObject.userid=user.userid;
                     payLoadObject.isLogin=true;
                     const accessToken=jwt.sign(payLoadObject,process.env.ACCESS_TOKEN_SECRET);
                     payLoadObject.accessToken=accessToken;

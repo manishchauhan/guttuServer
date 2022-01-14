@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 09, 2022 at 09:21 AM
+-- Generation Time: Jan 14, 2022 at 07:16 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.13
 
@@ -48,6 +48,31 @@ INSERT INTO `fungames` (`gameid`, `gamename`, `gameurl`, `gamedesc`, `multiplaye
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `room`
+--
+
+CREATE TABLE `room` (
+  `roomid` int(11) NOT NULL,
+  `userid` int(11) NOT NULL,
+  `gameid` int(11) NOT NULL,
+  `parentgame` varchar(256) NOT NULL,
+  `roomname` varchar(256) NOT NULL,
+  `roomdesc` mediumtext NOT NULL,
+  `roomimg` varchar(256) NOT NULL,
+  `players` tinyint(2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `room`
+--
+
+INSERT INTO `room` (`roomid`, `userid`, `gameid`, `parentgame`, `roomname`, `roomdesc`, `roomimg`, `players`) VALUES
+(1, 1, 1, 'typing master', 'typing room by manish', 'some room details by manish chauhan', '', 2),
+(2, 1, 1, 'typing master', 'typing room by manish2', 'some room details by manish chauhan2', '', 8);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user`
 --
 
@@ -77,6 +102,14 @@ ALTER TABLE `fungames`
   ADD PRIMARY KEY (`gameid`);
 
 --
+-- Indexes for table `room`
+--
+ALTER TABLE `room`
+  ADD PRIMARY KEY (`roomid`),
+  ADD KEY `userlook` (`userid`),
+  ADD KEY `roomlook` (`gameid`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -93,10 +126,27 @@ ALTER TABLE `fungames`
   MODIFY `gameid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `room`
+--
+ALTER TABLE `room`
+  MODIFY `roomid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
   MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `room`
+--
+ALTER TABLE `room`
+  ADD CONSTRAINT `roomlook` FOREIGN KEY (`gameid`) REFERENCES `fungames` (`gameid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `userlook` FOREIGN KEY (`userid`) REFERENCES `user` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

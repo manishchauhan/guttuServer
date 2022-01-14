@@ -2,7 +2,8 @@
 import  express  from "express";
 import { MySqlDataBase } from "./mysql/db/db.js";
 import cors from 'cors';
-import {UserRoutes} from "./mysql/routes/routes.js"
+import {UserRoutes} from "./mysql/routes/userRoutes.js"
+import {RoomRoutes} from "./mysql/routes/roomRoutes.js"
 import  cookieParser from 'cookie-parser';
 const app = express();
 // If needed
@@ -36,6 +37,7 @@ class App {
         // add user Routes
         app.use(cookieParser());
         this.addUserRoutes();
+        this.addRoomRoutes();
         // Handle all errors
         
         app.use((req,res,next)=>{
@@ -45,11 +47,19 @@ class App {
             return;
         })
     }
+    //  adding all routes for user
     addUserRoutes()
     {
         const userRoutes=new UserRoutes();
         app.use("/user",userRoutes.route);
      
+    }
+
+    // adding all routes for user
+    addRoomRoutes()
+    {
+        const roomRoutes=new RoomRoutes();
+        app.use("/room",roomRoutes.route)
     }
 }
 

@@ -49,7 +49,7 @@ export class MySqlDataBase
         })
     }
    //   Add a user based on table
-   addUser(tableName,dataObject,callBack=null)
+   add(tableName,dataObject,callBack=null)
    {
         const query=`INSERT INTO ${tableName} SET ?`;
         this.connection.query(query,dataObject,(err,res)=>{
@@ -65,7 +65,7 @@ export class MySqlDataBase
    }
 
    // Select user based on where
-   selectUser(tableName,objectString,callBack=null,fieldName=`email`)
+   select(tableName,objectString,callBack=null,fieldName=`email`)
    {
         const query=`SELECT * FROM ${tableName} WHERE ${fieldName} = ?`
         this.connection.query(query,objectString,(err,res)=>{
