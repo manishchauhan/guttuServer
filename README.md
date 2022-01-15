@@ -10,7 +10,7 @@
 
 5. ) add dynamic game table with all games - - done
 
-6. 1 ) user can add his/her room -done (only auth user)
+6. 1 ) user can add his/her room -done (only auth user) - ...working
 
 7. 0 ) user should able to update delete or delete all room he created based on id
 
@@ -18,9 +18,9 @@
 
 9. ) web socket room creation- work in progress
 
-10. ) user can select room create room delete room edit rooom need this at backend - progress
+10. ) user can select room create room delete room edit rooom need this at backend - ...working
 
-11. ) each game contain multiple types of room
+11. ) each game contain multiple types of room - done
 
 12. ) 1 mintue downtime if user don't fill the room computer need to be added
 
