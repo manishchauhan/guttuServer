@@ -11,6 +11,7 @@ export class RoomRoutes
         this.route=express.Router();
         this.addRoom();
         this.showRoomList();
+        this.updateRoom();
     }
 
     addRoom()
@@ -54,6 +55,30 @@ export class RoomRoutes
             MySqlDataBase.getInstance().selectAll(tableName,(response)=>{
 
                 res.send(response);
+                return;
+            })
+        })
+    }
+    // Update the room
+    updateRoom()
+    {
+
+        const tableName="room";
+        this.route.post(`/update`,authenticationPost,(req,res)=>{
+            if(!req.body)
+            {
+                res.status(400).send({
+                    message:"Content can be empty!"
+                })
+                return;
+            }
+            const dataObject={};
+            dataObject.roomid=req.body.roomid;//room id
+            dataObject.roomname=req.body.roomname;//roomname
+            dataObject.roomdesc=req.body.roomdesc;//roomdesc
+            dataObject.players=req.body.players;//players
+            MySqlDataBase.getInstance().updateRoom(tableName,dataObject,(response)=>{
+                res.status(201).send({message:"room data updated successfully enjoy"});
                 return;
             })
         })

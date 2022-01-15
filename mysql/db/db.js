@@ -80,4 +80,25 @@ export class MySqlDataBase
             }
         })
    }
+   // update room only query
+   updateRoom(tableName,object,callBack=null,fieldName=`roomid`)
+   {
+       const RoomName=object.roomname; // roomname
+       const RoomDesc=object.roomdesc; // roomdesc
+       const Player=object.players;// players
+       const Roomid=object.roomid;// roomid
+       const records=[RoomName,RoomDesc,Player,Roomid]
+       const query=`UPDATE ${tableName} SET roomname = ?,roomdesc = ?, players = ? WHERE ${fieldName} = ?`;
+       this.connection.query(query,records,(err,res)=>{
+        if(err)
+        {
+            throw new Error(err);
+        }
+        if(callBack)
+        {
+            res.length>0?callBack(true,res):callBack(false,res);
+        }
+    })
+   }
 }
+	
