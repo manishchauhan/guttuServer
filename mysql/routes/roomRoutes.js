@@ -12,6 +12,7 @@ export class RoomRoutes
         this.addRoom();
         this.showRoomList();
         this.updateRoom();
+        this.deleteRoom();
     }
 
     addRoom()
@@ -81,6 +82,26 @@ export class RoomRoutes
                 res.status(201).send({message:"room data updated successfully enjoy"});
                 return;
             })
+        })
+    }
+    // Delete the selected room
+    deleteRoom()
+    {
+        const tableName="room";
+        this.route.post(`/delete`,authenticationPost,(req,res)=>{
+            if(!req.body)
+            {
+                res.status(400).send({
+                    message:"Content can be empty!"
+                })
+                return;
+            }
+            
+            const idToDelete=req.body.roomid;//room id
+            MySqlDataBase.getInstance().delete(tableName,idToDelete,(response)=>{
+                res.status(201).send({message:response});
+                return;
+            },`roomid`)
         })
     }
 }

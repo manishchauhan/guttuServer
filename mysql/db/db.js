@@ -64,7 +64,21 @@ export class MySqlDataBase
             }
         })
    }
-
+   // Delete a row based on some parameter
+   delete(tableName,objectString,callBack=null,fieldName=`email`)
+   {
+       const query=`DELETE FROM ${tableName} WHERE ${fieldName} = ?`
+       this.connection.query(query,[objectString],(err,res)=>{
+        if(err)
+        {
+            throw new Error(err);
+        }
+        if(callBack)
+        {
+            callBack(`User deleted from the table`);
+        }
+    })
+   }
    // Select user based on where
    select(tableName,objectString,callBack=null,fieldName=`email`)
    {

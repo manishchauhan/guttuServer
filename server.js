@@ -33,11 +33,7 @@ class App {
         app.listen(4040, () => {
             console.log("Server is running on port 4040.")
         })
-        MySqlDataBase.getInstance();
-        // add user Routes
-        app.use(cookieParser());
-        this.addUserRoutes();
-        this.addRoomRoutes();
+        this.addMysqlConfig();
         // Handle all errors
         
         app.use((req,res,next)=>{
@@ -46,6 +42,15 @@ class App {
             next(err);
             return;
         })
+    }
+    /*when your database is mysql*/
+    addMysqlConfig()
+    {
+        MySqlDataBase.getInstance();
+        // add user Routes
+        app.use(cookieParser());
+        this.addUserRoutes();
+        this.addRoomRoutes();
     }
     //  adding all routes for user
     addUserRoutes()
@@ -61,6 +66,9 @@ class App {
         const roomRoutes=new RoomRoutes();
         app.use("/room",roomRoutes.route)
     }
+
+    
+     /*when your database is mangoDB*/
 }
 
 
