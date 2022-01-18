@@ -13,6 +13,7 @@ export class RoomRoutes
         this.showRoomList();
         this.updateRoom();
         this.deleteRoom();
+        this.deleteRooms();
     }
 
     addRoom()
@@ -99,6 +100,26 @@ export class RoomRoutes
             
             const idToDelete=req.body.roomid;//room id
             MySqlDataBase.getInstance().delete(tableName,idToDelete,(response)=>{
+                res.status(201).send({message:response});
+                return;
+            },`roomid`)
+        })
+    }
+    // Delete the multiple selected room
+    deleteRooms()
+    {
+        const tableName="room";
+        this.route.post(`/deletemany`,authenticationPost,(req,res)=>{
+            if(!req.body)
+            {
+                res.status(400).send({
+                    message:"Content can be empty!"
+                })
+                return;
+            }
+            
+            const idToDelete=req.body.roomids;//room id
+            MySqlDataBase.getInstance().deleteRooms(tableName,idsToDelete,(response)=>{
                 res.status(201).send({message:response});
                 return;
             },`roomid`)

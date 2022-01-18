@@ -69,15 +69,30 @@ export class MySqlDataBase
    {
        const query=`DELETE FROM ${tableName} WHERE ${fieldName} = ?`
        this.connection.query(query,[objectString],(err,res)=>{
-        if(err)
-        {
-            throw new Error(err);
-        }
-        if(callBack)
-        {
-            callBack(`User deleted from the table`);
-        }
-    })
+            if(err)
+            {
+                throw new Error(err);
+            }
+            if(callBack)
+            {
+                callBack(`User deleted from the table`);
+            }
+        })
+   }
+   //Delete multiple records from mysql table
+   deleteMany(tableName,records,callBack=null,fieldName=`email`)
+   {
+        const query=`DELETE FROM ${tableName} WHERE ${fieldName} = ?`
+        this.connection.query(query,[records],(err,res)=>{
+            if(err)
+            {
+                throw new Error(err);
+            }
+            if(callBack)
+            {
+                callBack(`Selected rooms deleted from the lobby`);
+            }
+        })
    }
    // Select user based on where
    select(tableName,objectString,callBack=null,fieldName=`email`)
